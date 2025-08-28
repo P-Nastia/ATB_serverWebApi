@@ -1,0 +1,6 @@
+@ATB_serverWebApi_HostAddress = http://localhost:5126
+
+GET {{ATB_serverWebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
