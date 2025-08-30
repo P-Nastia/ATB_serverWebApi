@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Напої безалкогольні",
+    "Slug": "napoi-bezalkoholni",
+    "Image": "https://src.zakaz.atbmarket.com/cache/category/Безалкогольні напої.webp"
+  },
+  {
+    "Name": "Овочі та фрукти",
+    "Slug": "ovochi-ta-frukty",
+    "Image": "https://src.zakaz.atbmarket.com/cache/category/Овочі та фрукти.webp"
+  },
+  {
+    "Name": "Морозиво",
+    "Slug": "morozyvo",
+    "Image": "https://src.zakaz.atbmarket.com/cache/category/334-morozivo.webp"
+  },
+  {
+    "Name": "Заморожені продукти",
+    "Slug": "zamorozheni-producty",
+    "Image": "https://src.zakaz.atbmarket.com/cache/category/Заморожені вироби.webp"
+  }
+]

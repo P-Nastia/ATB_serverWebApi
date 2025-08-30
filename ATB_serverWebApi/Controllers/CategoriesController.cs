@@ -1,24 +1,48 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Interfaces;
+using Core.Models.Category;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ATB_serverWebApi.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CategoriesController : ControllerBase
-    {
-        [HttpGet]
-        public IActionResult GetCategories()
-        {
-            var категорії = new[]
-            {
-                new { Id = 1, Name = "Напої безалкогольні", Image = "https://src.zakaz.atbmarket.com/cache/category/Безалкогольні напої.webp" },
-                new { Id = 2, Name = "Овочі та фрукти", Image = "https://src.zakaz.atbmarket.com/cache/category/Овочі та фрукти.webp" },
-                new { Id = 3, Name = "Морозиво", Image = "https://src.zakaz.atbmarket.com/cache/category/334-morozivo.webp" },
-                new { Id = 4, Name = "Заморожені продукти", Image = "https://src.zakaz.atbmarket.com/cache/category/Заморожені вироби.webp" }
-            };
+namespace ATB_serverWebApi.Controllers;
 
-            return Ok(категорії);
+[Route("api/[controller]")]
+[ApiController]
+public class CategoriesController(ICategoryService categoryService) : ControllerBase
+{
+    [HttpGet]
+    public async Task<IActionResult> GetCategories()
+    {
+        var model = await categoryService.List();
+
+        return Ok(model);
+    }
+    [HttpPost("create")]
+    public async Task<IActionResult> Create([FromForm] CategoryCreateModel model)
+    {
+        var category = await categoryService.Create(model);
+        return Ok(category);
+    }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetItemById(int id)
+    {
+        var model = await categoryService.GetItemById(id);
+
+        if (model == null)
+        {
+            return NotFound();
         }
+        return Ok(model);
+    }
+    [HttpPut("edit")] 
+    public async Task<IActionResult> Edit([FromForm] CategoryEditModel model)
+    {
+        var category = await categoryService.Edit(model);
+
+        return Ok(category);
+    }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(long id)
+    {
+        await categoryService.Delete(id);
+        return Ok();
     }
 }
