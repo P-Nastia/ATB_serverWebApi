@@ -28,13 +28,13 @@ public class CategoryCreateValidator : AbstractValidator<CategoryCreateModel>
             .NotEmpty()
             .WithMessage("Slug is required")
             .Must(slug => !string.IsNullOrEmpty(slug))
-            .WithMessage("Name cannot be empty or null")
+            .WithMessage("Slug cannot be empty or null")
             .DependentRules(() =>
             {
                 RuleFor(x => x.Slug)
                     .MustAsync(async (slug, cancellation) =>
                     !await db.Categories.AnyAsync(c => c.Slug.ToLower() == slug.ToLower().Trim(), cancellation))
-                .WithMessage("Category with this name already exists");
+                .WithMessage("Category with this slug already exists");
             })
             .MaximumLength(250)
             .WithMessage("Slug has to be no longer than 250 charachters");

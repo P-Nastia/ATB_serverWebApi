@@ -29,6 +29,15 @@ public class CategoryEditValidator : AbstractValidator<CategoryEditModel>
         RuleFor(x => x.Slug)
             .NotEmpty()
             .WithMessage("Slug is required")
+            .Must(slug => !string.IsNullOrEmpty(slug))
+            .WithMessage("Slug cannot be empty or null")
+            .DependentRules(() =>
+            {
+                RuleFor(x => x.Slug)
+                    .MustAsync(async (model, slug, cancellationToken) =>
+                    !await db.Categories.AnyAsync(x => (x.Slug.ToLower() == slug.ToLower().Trim() && x.Id != model.Id), cancellationToken))
+                    .WithMessage("Category with this slug already exists");
+            })
             .MaximumLength(250)
             .WithMessage("Slug has to be no longer than 250 charachters");
 
