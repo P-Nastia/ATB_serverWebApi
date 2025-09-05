@@ -36,7 +36,7 @@ public class CategoryService(AppDbContext context,
 
         if (model.ImageFile != null)
         {
-            await imageService.DeleteImageAsync(existing.Image);
+            await imageService.DeleteImageAsync(existing!.Image);
             existing.Image = await imageService.SaveImageAsync(model.ImageFile);
         }
         await context.SaveChangesAsync();
@@ -49,7 +49,7 @@ public class CategoryService(AppDbContext context,
         var model = await mapper
         .ProjectTo<CategoryItemModel>(context.Categories.Where(x => x.Id == id))
         .SingleOrDefaultAsync();
-        return model;
+        return model!;
     }
 
     public async Task<List<CategoryItemModel>> List()
