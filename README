@@ -1,0 +1,22 @@
+
+```
+docker build -t atb-serverwebapi . 
+docker ps -a
+docker images
+
+docker run -d --restart=always --name atb-serverwebapi-container -p 4098:8080 atb-serverwebapi
+http://172.19.189.168:4098/swagger/index.html (local)
+
+# зупинити контейнер
+docker stop atb-serverwebapi-container
+# видалити контейнер
+docker rm atb-serverwebapi-container
+
+docker login
+docker tag atb-serverwebapi:latest nastiapyv/atb-serverwebapi:0.1
+docker push nastiapyv/atb-serverwebapi:0.1
+
+docker pull nastiapyv/atb-serverwebapi:0.1
+docker ps -a
+docker run -d --restart=always --name atb-serverwebapi-container -p 4098:8080 nastiapyv/atb-serverwebapi:0.1
+```
