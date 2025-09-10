@@ -20,6 +20,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());// реєст
 
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddControllers();
 

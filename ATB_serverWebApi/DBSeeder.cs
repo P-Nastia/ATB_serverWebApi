@@ -2,6 +2,7 @@
 
 using AutoMapper;
 using Bogus;
+using Core.Constants;
 using Core.Interfaces;
 using Core.Models.Seeder;
 using Domain;
@@ -21,6 +22,7 @@ public static class DbSeeder
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
         var imageService = scope.ServiceProvider.GetRequiredService<IImageService>();
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<RoleEntity>>();
 
         context.Database.Migrate();
 
@@ -50,6 +52,18 @@ public static class DbSeeder
             else
             {
                 Console.WriteLine("Not found file Categories.json");
+            }
+        }
+
+        if (!context.Roles.Any())
+        {
+            foreach (var roleName in Roles.AllRoles)
+            {
+                var result = await roleManager.CreateAsync(new(roleName));
+                if (!result.Succeeded)
+                {
+                    Console.WriteLine("Error Create Role {0}", roleName);
+                }
             }
         }
 

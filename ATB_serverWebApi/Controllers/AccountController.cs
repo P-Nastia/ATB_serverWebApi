@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.Constants;
 using Core.Interfaces;
 using Core.Models.Account;
 using Core.Services;
@@ -11,28 +12,13 @@ namespace ATB_serverWebApi.Controllers;
 
 [Route("api/[controller]/[action]")]
 [ApiController]
-public class AccountController(IMapper mapper,
-    UserManager<UserEntity> userManager,
-    IImageService imageService) : ControllerBase
+public class AccountController(IAccountService accountService) : ControllerBase
 {
     [HttpPost]
     public async Task<IActionResult> Register([FromForm] RegisterModel model)
     {
-        var user = mapper.Map<UserEntity>(model);
-
-        user.Image = await imageService.SaveImageAsync(model.ImageFile!);
-
-        var result = await userManager.CreateAsync(user, model.Password);
-        if (result.Succeeded)
-        {
-            return Ok(new
-            {
-                status = 200,
-                isValid = true,
-                message = "Registration successful"
-            });
-        }
-        else
+        var token = await accountService.Register(model);
+        if (token == null)
         {
             return BadRequest(new
             {
@@ -41,6 +27,9 @@ public class AccountController(IMapper mapper,
                 errors = "Registration failed"
             });
         }
-
+        else
+        {
+            return Ok(new { Token = token });
+        }
     }
 }
